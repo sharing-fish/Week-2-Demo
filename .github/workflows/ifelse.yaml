@@ -14,7 +14,7 @@ jobs:
 
     - name: Run a script
       id: step1
-      run: echo "This is the main step" #exit 1
+      run: exit 1
 
     - name: If step succeeds
       if: success() && steps.step1.outcome == 'success'
