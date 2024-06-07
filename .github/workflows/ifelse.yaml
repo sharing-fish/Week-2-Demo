@@ -1,0 +1,25 @@
+name: If this than that else
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Run a script
+      id: step1
+      run: echo "This is the main step" #exit 1
+
+    - name: If step succeeds
+      if: success() && steps.step1.outcome == 'success'
+      run: echo "Step succeeded"
+
+    - name: If step fails
+      if: failure() && steps.step1.outcome == 'failure'
+      run: echo "Step failed"
