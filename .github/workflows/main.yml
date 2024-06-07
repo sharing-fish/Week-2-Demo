@@ -1,6 +1,7 @@
 name: Send Slack Message
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - 'main'
@@ -11,7 +12,7 @@ jobs:
     steps:
       - name: Post to slack channel
         id: slack
-        uses: slackapi/slack-github-action@1.26.0
+        uses: slackapi/slack-github-action@1.26
         with:
           channel-id: 'sharing-fish'
           slack-message: "Hey man I love fish food and also your repo just got pushed to"
