@@ -1,0 +1,20 @@
+name: Send Slack Message
+
+on:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  notify-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Post to slack channel
+        id: slack
+        uses: slackapi/slack-github-action@1.26.0
+        with:
+          channel-id: 'sharing-fish'
+          slack-message: "Hey man I love fish food and also your repo just got pushed to"
+        env:
+          SLACK_BOT_TOKEN: ${{secrets.SLACK_BOT_TOKEN}}
+          
