@@ -1,14 +1,7 @@
 var express = require('express'),
-    cors = require("cors"),
     app = express(),
-    bodyParser = require('body-parser'),
     config = require('./config'),
     axios = require('axios');
-
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-
-app.use(cors());
 
 async function getUserRepos(username) {
     try {
