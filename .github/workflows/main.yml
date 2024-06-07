@@ -14,7 +14,7 @@ jobs:
         id: slack
         uses: slackapi/slack-github-action@v1.26.0
         with:
-          channel: "C077JHC7A6M"
+          channel-id: "C077JHC7A6M"
           slack-message: "Hey man I love fish food and also your repo just got pushed to ha"
         env:
           SLACK_BOT_TOKEN: ${{secrets.SLACK_BOT_TOKEN}}
