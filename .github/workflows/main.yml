@@ -65,28 +65,9 @@ jobs:
         run: gh release list --json tagName -q '.[].tagName' > tag_name.txt
         env:
             GH_TOKEN: ${{secrets.PAT}}
-      - name: Isolate patch number
+      - name: Add one to minor version
         run: |
-          # Read the version number from the file
-          VERSION_TAG=$(cat tag_name.txt)
-      
-          # Remove the 'v' prefix
-          VERSION_NUM=${VERSION_TAG#v}
-      
-          # Split the version number into an array
-          IFS='.' read -r VERSION_PARTS <<< "$VERSION_NUM"
-      
-          # Isolate the minor version number
-          MINOR_VERSION=${VERSION_PARTS[1]}
-            
-          echo "minor version: $(MINOR_VERSION)"
-          # Increment the minor version number
-          ((MINOR_VERSION++))
-
-          # Reassemble the version number
-          NEW_VERSION="${VERSION_PARTS[0]}.$MINOR_VERSION"
-
-          # Add the 'v' prefix
-          NEW_TAG="v$NEW_VERSION"
-
-          echo $NEW_TAG
+            tag_name=$(cat tag_name.txt)
+            IFS='.' read -r major minor patch <<< "$tag_name"
+            echo "v$major.$((minor+1)).$patch" > new_tag.txt
+            echo "New tag: $(cat new_tag.txt)"
