@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sharing Fishes Demo</title>
+</head>
+<body>
+    <h1>GitHub User Repositories</h1>
+  <form id="usernameForm">
+    <label for="username">GitHub Username:</label>
+    <input type="text" id="username" name="username" required>
+    <button type="submit">Fetch Repos</button>
+  </form>
+    <div id="repoList"></div>
+
+    <script>
+        function jsonToHtmlList(jsonData) {
+        function createList(data) {
+        let html = '<ul>';
+        for (let item of data) {
+          html += `<li><strong>${item.name}</strong>`;
+          html += '<ul>';
+          for (let key in item) {
+            if (item.hasOwnProperty(key) && key !== 'name') {
+              html += `<li>${key}: ${item[key]}</li>`;
+            }
+          }
+          html += '</ul>';
+          html += '</li>';
+        }
+        html += '</ul>';
+        return html;
+      }
+      return createList(jsonData);
+    }
+    
+        function fetchGitHubData(username) {
+          const url = `https://api.github.com/users/${username}/repos`;
+    
+          fetch(url)
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+              }
+              return response.json();
+            })
+            .then(data => {
+              // Filter data to only include name and node_id
+              const filteredData = data.map(repo => ({
+                name: repo.name,
+                node_id: repo.node_id,
+                html_url: repo.html_url,
+                description: repo.description
+              }));
+              const htmlList = jsonToHtmlList(filteredData);
+              document.getElementById('repoList').innerHTML = htmlList;
+            })
+            .catch(error => {
+              console.error('Error fetching data:', error);
+              document.getElementById('repoList').innerText = 'Error fetching data. Please try again later.';
+            });
+        }
+    
+        // Handle form submission
+        document.getElementById('usernameForm').addEventListener('submit', function(event) {
+          event.preventDefault();
+          const username = document.getElementById('username').value;
+          if (username) {
+            fetchGitHubData(username);
+          }
+        });
+      </script>
+</body>
+</html>
