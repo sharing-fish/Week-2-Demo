@@ -59,6 +59,12 @@ jobs:
           SLACK_BOT_TOKEN: ${{secrets.SLACK_BOT_TOKEN}}
       - name: 'Checkout repository'
         uses: actions/checkout@v4
+      - name: Find current release
+        run: |
+            LATEST=$(git describe --tags)
+            VERSION=${LATEST:3} #chops off first 3 characters- won't work for v10.0+
+            ((VERSION++))
+            echo "v1.$VERSION"
       - name: Create an issue
         env:
             GH_TOKEN: ${{secrets.PAT}}
