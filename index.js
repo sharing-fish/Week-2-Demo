@@ -19,7 +19,7 @@ async function getUserRepos(username) {
   }
   
   app.get('/', async (req, res) => {
-    const username = 'jarrettgaither';
+    const username = 'sharing-fish';
     try {
       const repos = await getUserRepos(username);
       res.json(repos);
