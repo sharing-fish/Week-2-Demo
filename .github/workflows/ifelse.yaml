@@ -18,8 +18,8 @@ jobs:
 
     - name: If step succeeds
       if: success() && steps.step1.outcome == 'success'
-      run: echo "Step succeeded"
+      run: echo "Step succeeded - send a slack message to the channel, create a new release"
 
     - name: If step fails
       if: failure() && steps.step1.outcome == 'failure'
-      run: echo "Step failed"
+      run: echo "Step failed - send a slack message to the channel, create an issue"

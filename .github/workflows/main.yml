@@ -1,0 +1,55 @@
+name: If this than that else
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  ifelse:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Run a script
+      id: step1
+      run: exit 1
+
+    - name: If step succeeds
+      if: success() && steps.step1.outcome == 'success'
+      run: echo "Step succeeded - send a slack message to the channel, create a new release"
+
+    - name: If step fails
+      if: failure() && steps.step1.outcome == 'failure'
+      run: echo "Step failed - send a slack message to the channel, create an issue"
+
+  fail:
+    needs: ifelse
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Post fail to slack channel
+        id: slack
+        uses: slackapi/slack-github-action@v1.26.0
+        with:
+          channel-id: "C077JHC7A6M"
+          slack-message: "Your action failed :/"
+        env:
+          SLACK_BOT_TOKEN: ${{secrets.SLACK_BOT_TOKEN}}
+
+
+
+  pass:
+    needs: ifelse
+    if: success()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Post success to slack channel
+        id: slack
+        uses: slackapi/slack-github-action@v1.26.0
+        with:
+          channel-id: "C077JHC7A6M"
+          slack-message: "Your action passed :D"
+        env:
+          SLACK_BOT_TOKEN: ${{secrets.SLACK_BOT_TOKEN}}
