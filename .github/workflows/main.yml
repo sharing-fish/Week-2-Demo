@@ -69,5 +69,5 @@ jobs:
         run: |
             tag_name=$(cat tag_name.txt)
             IFS='.' read -r major minor patch <<< "$tag_name"
-            echo "v$major.$((minor+1)).$patch" > new_tag.txt
+            echo "$major.$((minor+1))" > new_tag.txt
             echo "New tag: $(cat new_tag.txt)"
