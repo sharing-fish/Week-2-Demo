@@ -71,3 +71,10 @@ jobs:
             IFS='.' read -r major minor patch <<< "$tag_name"
             echo "$major.$((minor+1))" > new_tag.txt
             echo "New tag: $(cat new_tag.txt)"
+        shell: bash
+      - name: Create a new release
+        run: |
+            new_tag=$(cat new_tag.txt)
+            gh release create $new_tag
+        env:
+            GH_TOKEN: ${{secrets.PAT}}
