@@ -69,7 +69,7 @@ jobs:
         run: |
             tag_name=$(cat tag_name.txt)
             IFS='.' read -r major minor patch <<< "$tag_name"
-            echo "$major.$((minor+1))" > new_tag.txt
+            echo "$major.$minor.$((patch+1))" > new_tag.txt
             echo "New tag: $(cat new_tag.txt)"
         shell: bash
       - name: Create a new release
