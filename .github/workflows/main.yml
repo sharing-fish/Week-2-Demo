@@ -37,9 +37,11 @@ jobs:
           slack-message: "Your action failed :/"
         env:
           SLACK_BOT_TOKEN: ${{secrets.SLACK_BOT_TOKEN}}
+      - name: 'Checkout repository'
+        uses: actions/checkout@v4
       - name: Create an issue
         env:
-            GITHUB_TOKEN: ${{secrets.PAT}}
+            GH_TOKEN: ${{secrets.PAT}}
         run: gh issue create --title "Security test failed" --body "The security test failed, please check the logs" --assignee @me
 
   pass:
