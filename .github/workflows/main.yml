@@ -14,7 +14,7 @@ jobs:
 
     - name: Run a script
       id: step1
-      run: exit 1
+      run: echo "Hello, world!"
 
     - name: If step succeeds
       if: success() && steps.step1.outcome == 'success'
@@ -57,3 +57,9 @@ jobs:
           slack-message: "Your action passed :D"
         env:
           SLACK_BOT_TOKEN: ${{secrets.SLACK_BOT_TOKEN}}
+      - name: 'Checkout repository'
+        uses: actions/checkout@v4
+      - name: Create an issue
+        env:
+            GH_TOKEN: ${{secrets.PAT}}
+        run: gh release create v1.0.0
