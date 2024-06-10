@@ -78,5 +78,7 @@ jobs:
       
           # Isolate the minor version number
           MINOR_VERSION=${VERSION_PARTS[1]}
-      
+            
+          $MINOR_VERSION += 1
           echo $MINOR_VERSION
+          
