@@ -27,7 +27,7 @@ async function getUserRepos(username) {
       res.status(500).json({ error: 'Failed to fetch user repositories' });
     }
   });
-  
+
 
 const PORT = 3000;
 module.exports = app.listen(PORT, () => {
