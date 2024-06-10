@@ -28,7 +28,6 @@ async function getUserRepos(username) {
     }
   });
 
-
 const PORT = 3000;
 module.exports = app.listen(PORT, () => {
     console.log('Server running on port %d', PORT);
