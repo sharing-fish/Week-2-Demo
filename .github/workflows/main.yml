@@ -1,4 +1,4 @@
-name: If this than that else
+name: CI/CD
 on:
   workflow_dispatch:
   push:
@@ -6,7 +6,7 @@ on:
       - 'main'
 
 jobs:
-  ifelse:
+  security_tests:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
@@ -25,7 +25,7 @@ jobs:
       run: echo "Step failed - send a slack message to the channel, create an issue"
 
   fail:
-    needs: ifelse
+    needs: security_tests
     if: failure()
     runs-on: ubuntu-latest
     steps:
@@ -37,11 +37,14 @@ jobs:
           slack-message: "Your action failed :/"
         env:
           SLACK_BOT_TOKEN: ${{secrets.SLACK_BOT_TOKEN}}
+      - name: Create an issue
+        run: gh issue create --title "Security test failed" --body "The security test failed, please check the logs" --assignee @me
+
 
 
 
   pass:
-    needs: ifelse
+    needs: security_tests
     if: success()
     runs-on: ubuntu-latest
     steps:
