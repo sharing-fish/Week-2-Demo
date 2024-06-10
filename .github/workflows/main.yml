@@ -74,11 +74,12 @@ jobs:
           VERSION_NUM=${VERSION_TAG#v}
       
           # Split the version number into an array
-          IFS='.' read -ra VERSION_PARTS <<< "$VERSION_NUM"
+          IFS='.' read -r VERSION_PARTS <<< "$VERSION_NUM"
       
           # Isolate the minor version number
           MINOR_VERSION=${VERSION_PARTS[1]}
             
+          echo "minor version: $(MINOR_VERSION)"
           # Increment the minor version number
           ((MINOR_VERSION++))
 
