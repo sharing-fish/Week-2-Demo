@@ -79,6 +79,13 @@ jobs:
           # Isolate the minor version number
           MINOR_VERSION=${VERSION_PARTS[1]}
             
-          $MINOR_VERSION += 1
-          echo $MINOR_VERSION
-          
+          # Increment the minor version number
+          ((MINOR_VERSION++))
+
+          # Reassemble the version number
+          NEW_VERSION="${VERSION_PARTS[0]}.$MINOR_VERSION"
+
+          # Add the 'v' prefix
+          NEW_TAG="v$NEW_VERSION"
+
+          echo $NEW_TAG
