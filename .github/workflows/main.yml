@@ -63,6 +63,8 @@ jobs:
       
       - name: Save tag name to file
         run: gh release list --json tagName -q '.[].tagName' > tag_name.txt
+        env:
+            GH_TOKEN: ${{secrets.PAT}}
       - name: Isolate patch number
         run: |
           # Read the version number from the file
