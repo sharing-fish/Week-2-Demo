@@ -59,13 +59,16 @@ jobs:
           SLACK_BOT_TOKEN: ${{secrets.SLACK_BOT_TOKEN}}
       - name: 'Checkout repository'
         uses: actions/checkout@v4
-      - name: Find current release
-        run: |
-            LATEST=$(git describe --tags)
-            VERSION=${LATEST:3} #chops off first 3 characters- won't work for v10.0+
-            ((VERSION++))
-            echo "v1.$VERSION"
-      - name: Create an issue
+#semantic-release documentation
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+      - name: Install dependencies
+        run: npm clean-install
+      - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
+        run: npm audit signatures
+      - name: Release
         env:
-            GH_TOKEN: ${{secrets.PAT}}
-        run: gh release create v1.0
+          GITHUB_TOKEN: ${{ secrets.PAT }}
+        run: npx semantic-release
