@@ -42,7 +42,7 @@ jobs:
       - name: Create an issue
         env:
             GH_TOKEN: ${{secrets.PAT}}
-        run: gh issue create --title "Security test failed" --body "The security test failed, please check the logs" --assignee @me
+        run: gh issue create --title "Security test failed" --body "The security test failed, please check the logs"
 
   pass:
     needs: security_tests
