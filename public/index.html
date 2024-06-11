@@ -19,68 +19,71 @@
     <button id="fetchReposButton">Fetch Repositories</button>
     <button id="fetchProjectsButton">Fetch Projects</button>
     <div id="container">Enter a username and press a button to fetch data.</div>
+    <script src="config.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+
+document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('container');
     const fetchReposButton = document.getElementById('fetchReposButton');
     const fetchProjectsButton = document.getElementById('fetchProjectsButton');
     const usernameInput = document.getElementById('username');
-
+    const mytoken = config.apiKey;
     async function fetchGraphQLData(query) {
-        try {
-            const response = await fetch('https://api.github.com/graphql', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ query }),
-            });
+    try {
+        const response = await fetch('https://api.github.com/graphql', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${mytoken}`,
+            },
+            body: JSON.stringify({ query }),
+        });
 
-            if (!response.ok) {
-                throw new Error('Network response was not ok ' + response.statusText);
-            }
-
-            const json = await response.json();
-
-            if (json.errors) {
-                throw new Error('Error in GraphQL query: ' + JSON.stringify(json.errors));
-            }
-
-            return json.data;
-        } catch (error) {
-            console.error('Error fetching GraphQL data:', error);
-            container.innerHTML = 'Error loading data.';
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
         }
-    }
 
-    function displayRepos(data) {
-        const repositories = data.user.repositories.edges;
-        if (repositories.length === 0) {
-            container.innerHTML = 'No repositories found for this user.';
-            return;
-        }
-        const repoList = repositories.map(repo => `
-            <div>
-                <h3>${repo.node.name}</h3>
-            </div>
-        `).join('');
-        container.innerHTML = repoList;
-    }
+        const json = await response.json();
 
-    function displayProjects(data) {
-        const projects = data.user.projects.nodes;
-        if (projects.length === 0) {
-            container.innerHTML = 'No projects found for this user.';
-            return;
+        if (json.errors) {
+            throw new Error('Error in GraphQL query: ' + JSON.stringify(json.errors));
         }
-        const projectList = projects.map(project => `
-            <div>
-                <h3>${project.name}</h3>
-                <p>${project.body || 'No description available.'}</p>
-            </div>
-        `).join('');
-        container.innerHTML = projectList;
+
+        return json.data;
+    } catch (error) {
+        console.error('Error fetching GraphQL data:', error);
+        container.innerHTML = 'Error loading data.';
     }
+};
+
+function displayRepos(data) {
+    const repositories = data.user.repositories.edges;
+    if (repositories.length === 0) {
+        container.innerHTML = 'No repositories found for this user.';
+        return;
+    }
+    const repoList = repositories.map(repo => `
+        <div>
+            <h3>${repo.node.name}</h3>
+        </div>
+    `).join('');
+    container.innerHTML = repoList;
+};
+
+function displayProjects(data) {
+    const projects = data.user.projects.nodes;
+    if (projects.length === 0) {
+        container.innerHTML = 'No projects found for this user.';
+        return;
+    }
+    const projectList = projects.map(project => `
+        <div>
+            <h3>${project.name}</h3>
+            <p>${project.body || 'No description available.'}</p>
+        </div>
+    `).join('');
+    container.innerHTML = projectList;
+};
 
     fetchReposButton.addEventListener('click', () => {
         const username = usernameInput.value.trim();
@@ -135,7 +138,6 @@
         }
     });
 });
-
     </script>
     </body>
     </html>
