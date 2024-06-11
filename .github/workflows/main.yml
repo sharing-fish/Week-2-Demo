@@ -8,10 +8,6 @@ on:
 jobs:
   security_tests:
     runs-on: ubuntu-latest
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
     steps:
     - name: successful test
       id: testing
