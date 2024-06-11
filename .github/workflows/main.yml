@@ -85,4 +85,4 @@ jobs:
             new_tag=$(cat new_tag.txt)
             gh release create $new_tag
         env:
-            GH_TOKEN: ${{secrets.PAT}}
+            GH_TOKEN: ${{secrets.PAT}} 
