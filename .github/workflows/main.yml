@@ -16,11 +16,13 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Hello world action
+    - name: successful test
       id: testing
-      uses: actions/hello-world-javascript-action@v1
-      with:
-        who-to-greet: 'Sharing-Fish'
+      run: echo "Hello, world!"
+
+   # - name: failed test
+   #   id: testing
+   #   run: exit 1
 
     - name: If step succeeds
       if: success() && steps.testing.outcome == 'success'
