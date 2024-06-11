@@ -13,9 +13,6 @@ jobs:
       contents: read
       security-events: write
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
     - name: successful test
       id: testing
       run: echo "Hello, world!"
@@ -45,8 +42,10 @@ jobs:
           slack-message: "Your action failed :/"
         env:
           SLACK_BOT_TOKEN: ${{secrets.SLACK_BOT_TOKEN}}
+
       - name: 'Checkout repository'
         uses: actions/checkout@v4
+
       - name: Create an issue
         env:
             GH_TOKEN: ${{secrets.PAT}}
@@ -67,12 +66,12 @@ jobs:
           SLACK_BOT_TOKEN: ${{secrets.SLACK_BOT_TOKEN}}
       - name: 'Checkout repository'
         uses: actions/checkout@v4
-      
-      
+        
       - name: Save tag name to file
         run: gh release list --json tagName -q '.[].tagName' > tag_name.txt
         env:
             GH_TOKEN: ${{secrets.PAT}}
+
       - name: Add one to minor version
         run: |
             tag_name=$(cat tag_name.txt)
@@ -80,6 +79,7 @@ jobs:
             echo "$major.$minor.$((patch+1))" > new_tag.txt
             echo "New tag: $(cat new_tag.txt)"
         shell: bash
+
       - name: Create a new release
         run: |
             new_tag=$(cat new_tag.txt)
