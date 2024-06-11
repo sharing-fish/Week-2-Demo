@@ -23,11 +23,11 @@ jobs:
         who-to-greet: 'Sharing-Fish'
 
     - name: If step succeeds
-      if: success() && steps.codeql.outcome == 'success'
+      if: success() && steps.testing.outcome == 'success'
       run: echo "Step succeeded - send a slack message to the channel, create a new release"
 
     - name: If step fails
-      if: failure() && steps.codeql.outcome == 'failure'
+      if: failure() && steps.testing.outcome == 'failure'
       run: echo "Step failed - send a slack message to the channel, create an issue"
 
   fail:
