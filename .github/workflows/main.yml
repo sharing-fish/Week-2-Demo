@@ -12,16 +12,24 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Run a script
-      id: step1
-      run: echo "hello world"
+    - name: Checkout repository # run a codeql analysis
+      uses: actions/checkout@v2
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: "javascript"
+
+    - name: Perform CodeQL Analysis
+      id: codeql
+      uses: github/codeql-action/analyze@v2
 
     - name: If step succeeds
-      if: success() && steps.step1.outcome == 'success'
+      if: success() && steps.codeql.outcome == 'success'
       run: echo "Step succeeded - send a slack message to the channel, create a new release"
 
     - name: If step fails
-      if: failure() && steps.step1.outcome == 'failure'
+      if: failure() && steps.codeql.outcome == 'failure'
       run: echo "Step failed - send a slack message to the channel, create an issue"
 
   fail:
