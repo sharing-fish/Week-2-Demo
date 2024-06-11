@@ -16,17 +16,11 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Checkout repository # run a codeql analysis
-      uses: actions/checkout@v2
-
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
+    - name: Hello world action
+      id: testing
+      uses: actions/hello-world-javascript-action@v1
       with:
-        languages: "javascript"
-
-    - name: Perform CodeQL Analysis
-      id: codeql
-      uses: github/codeql-action/analyze@v2
+        who-to-greet: 'Sharing-Fish'
 
     - name: If step succeeds
       if: success() && steps.codeql.outcome == 'success'
