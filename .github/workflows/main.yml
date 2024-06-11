@@ -65,7 +65,7 @@ jobs:
         env:
           SLACK_BOT_TOKEN: ${{secrets.SLACK_BOT_TOKEN}}
       - name: 'Checkout repository'
-        uses: actions/checkout@v1
+        uses: actions/checkout@v4
         
       - name: Save tag name to file
         run: gh release list --json tagName -q '.[].tagName' > tag_name.txt
